@@ -17,6 +17,12 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [self initClarityView];
+    [self initNormalView];
+}
+
+#pragma mark - 创建透明视图
+- (void)initClarityView{
 
     //底层视图(需要触发点击事件)
     UIView *firstView = [[UIView alloc] initWithFrame:CGRectMake(100, 40, 100, 100)];
@@ -33,15 +39,38 @@
     [self.view addSubview:secondView];
 
     //最上面的透明视图
-    FirstView *customView = [[FirstView alloc] initWithFrame:CGRectMake(80, 10, 300, 200)];
+    FirstView *customView = [[FirstView alloc] initWithFrame:CGRectMake(80, 10, 200, 200)];
     customView.alpha = 0;
     customView.backgroundColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:.5];
     customView.passthroughViews = @[firstView, secondView];
     [self.view addSubview:customView];
 }
 
+#pragma mark - 创建普通视图
+- (void)initNormalView{
+
+    //底层视图(需要触发点击事件)
+    UIView *firstView = [[UIView alloc] initWithFrame:CGRectMake(30, 340, 100, 100)];
+    firstView.backgroundColor = [UIColor greenColor];
+    firstView.userInteractionEnabled = YES;
+
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(onClick2)];
+    [firstView addGestureRecognizer:tap];
+    [self.view addSubview:firstView];
+
+    //上面的普通视图
+    FirstView *customView = [[FirstView alloc] initWithFrame:CGRectMake(40, 310, 200, 200)];
+    customView.backgroundColor = [UIColor colorWithRed:1 green:0 blue:0 alpha:.5];
+    customView.passthroughViews = @[firstView];
+    [self.view addSubview:customView];
+}
+
 - (void)onClick{
-    NSLog(@"-->> onClick");
+    NSLog(@"-->> 穿过透明视图");
+}
+
+- (void)onClick2{
+    NSLog(@"-->> 穿过非透明视图");
 }
 
 @end
